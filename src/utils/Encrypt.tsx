@@ -16,12 +16,11 @@ function encrypt(message: string): string {
   return hexToUtf8(sha512(message));
 }
 
-export function getPin(length: number, key: string, message: string) {
+export function getPin(length: number, key: string, message: string): string {
   let pin = "";
   let toEncrypt = message + key;
   while (pin.length < length) {
     pin += (encrypt(toEncrypt).match(/\d+/g) || []).join("");
-    console.log(pin);
     toEncrypt += key;
   }
 
@@ -33,7 +32,7 @@ export function getPassword(
   key: string,
   message: string,
   regexp: RegExp
-) {
+): string {
   let password = "";
   let toEncrypt = key + message + key;
   while (password.length < length) {
