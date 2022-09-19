@@ -110,7 +110,7 @@ export default function PasswordForm({
   return (
     <div className="">
       <header className="flex justify-between items-center text-lg mb-4">
-        <h1 className="flex items-center font-bold tracking-wide uppercase text-2xl">
+        <h1 className="flex items-center font-bold tracking-wide uppercase lg:text-2xl">
           <MdLock size={"1.5em"} />
           Password Generator
         </h1>
