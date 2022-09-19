@@ -1,115 +1,14 @@
 import React, { useState, useReducer, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { getPin } from "../utils/encrypt";
-import { useSemiPersistentReducer } from "../utils/custom-hooks";
-import { capitalizeFirstLetter } from "../utils/format-strings";
-import { ServiceDataManager, EmailDataManager } from "./data-managers";
-
-type Email = {
-  email: string;
-  comment: string;
-  id: string;
-};
-
-type EmailAction =
-  | {
-      type: "ADD_EMAIL";
-      email: string;
-      comment: string;
-    }
-  | {
-      type: "REMOVE_EMAIL";
-      id: string;
-    };
-
-type Service = {
-  name: string;
-  value: string;
-  url: string;
-  comment: string;
-  id: string;
-};
-
-type ServiceAction =
-  | {
-      type: "ADD_SERVICE";
-      serviceData: {
-        name: string;
-        comment: string;
-        url: string;
-      };
-    }
-  | {
-      type: "REMOVE_SERVICE";
-      id: string;
-    };
-
-const emailReducer = (state: Email[], action: EmailAction) => {
-  switch (action.type) {
-    case "ADD_EMAIL": {
-      return state.concat({
-        email: action.email,
-        comment: action.comment,
-        id: uuidv4(),
-      });
-    }
-    case "REMOVE_EMAIL": {
-      return state.filter((email) => email.id !== action.id);
-    }
-  }
-};
-
-const serviceReducer = (state: Service[], action: ServiceAction) => {
-  switch (action.type) {
-    case "ADD_SERVICE": {
-      if (
-        state.every(
-          (service) =>
-            service.name !== capitalizeFirstLetter(action.serviceData.name)
-        )
-      ) {
-        let key = localStorage.getItem("key") || "";
-        return state.concat({
-          name: capitalizeFirstLetter(action.serviceData.name),
-          value: getPin(20, key, action.serviceData.name),
-          comment: action.serviceData.comment,
-          url: action.serviceData.url,
-          id: uuidv4(),
-        });
-      }
-      return state;
-    }
-    case "REMOVE_SERVICE": {
-      return state.filter((service) => service.id !== action.id);
-    }
-  }
-};
-
-type GeneratorData = {
-  length: number;
-  includeUppercase: boolean;
-  includeLowercase: boolean;
-  includeNumbers: boolean;
-  includeSymbols: boolean;
-};
-
-type GeneratorAction =
-  | {
-      type: "SET_LENGTH";
-      length: number;
-    }
-  | {
-      type: "TOGGLE_UPPERCASE";
-    }
-  | {
-      type: "TOGGLE_LOWERCASE";
-    }
-  | {
-      type: "TOGGLE_NUMBERS";
-    }
-  | {
-      type: "TOGGLE_SYMBOLS";
-    };
+import Settings from "./Settings";
+import {
+  Email,
+  EmailAction,
+  Service,
+  ServiceAction,
+  GeneratorData,
+  GeneratorAction,
+} from "../utils/types";
 
 const generatorDataReducer = (
   state: GeneratorData,
@@ -149,65 +48,26 @@ const generatorDataReducer = (
   }
 };
 
-let initialServices: Service[] = [
-  {
-    name: "Facebook",
-    comment: "",
-    url: "https://www.facebook.com",
-    value: uuidv4(),
-    id: uuidv4(),
-  },
-  {
-    name: "Twitter",
-    comment: "",
-    url: "https://twitter.com/",
-    value: uuidv4(),
-    id: uuidv4(),
-  },
-  {
-    name: "League of Legends",
-    comment: "LAN server",
-    url: "https://www.leagueoflegends.com/es-mx/",
-    value: uuidv4(),
-    id: uuidv4(),
-  },
-];
-let initialEmail: Email[] = [
-  { email: "jmeh1992@gmail.com", comment: "Personal e-mail", id: uuidv4() },
-  {
-    email: "j-m-eh@hotmail.com",
-    comment: "My first hotmail mail",
-    id: uuidv4(),
-  },
-];
-
 export default function PasswordForm({
-  encryptationKey,
+  serviceList,
+  dispatchServiceList,
+  emailList,
+  dispatchEmailList,
   onSubmit,
 }: {
-  encryptationKey: string;
+  serviceList: Service[];
+  dispatchServiceList: (action: ServiceAction) => void;
+  emailList: Email[];
+  dispatchEmailList: (action: EmailAction) => void;
   onSubmit: (
     serviceValue: string,
     email: string,
     generatorData: GeneratorData
   ) => void;
 }) {
-  const [serviceList, dispatchServiceList] = useSemiPersistentReducer(
-    "service-list",
-    serviceReducer,
-    initialServices
-  );
-
-  const [emailList, dispatchEmailList] = useSemiPersistentReducer(
-    "email-list",
-    emailReducer,
-    initialEmail
-  );
-
   const [service, setService] = useState("");
   const [email, setEmail] = useState("");
-  const [showServiceData, setShowServiceData] = useState(false);
-  const [showEmailData, setShowEmailData] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [generatorData, dispatchGeneratorData] = useReducer(
     generatorDataReducer,
     {
@@ -242,15 +102,11 @@ export default function PasswordForm({
     dispatchServiceList({ type: "REMOVE_SERVICE", id: serviceId });
   };
 
-  const handleServiceData = () => setShowServiceData(!showServiceData);
-
-  const handleEmailData = () => setShowEmailData(!showEmailData);
-
   return (
     <div>
       <header>
         <h1>Password Generator</h1>
-        <button onClick={() => console.log("hello")}>Settings</button>
+        <button onClick={() => setShowSettings(true)}>Settings</button>
       </header>
       <form
         onSubmit={(event) => {
@@ -366,19 +222,6 @@ export default function PasswordForm({
         </fieldset>
         <button type="submit">Generate</button>
       </form>
-      <ServiceDataManager
-        serviceList={serviceList}
-        show={showServiceData}
-        onAddService={handleAddService}
-        onRemoveService={handleRemoveService}
-      />
-
-      <EmailDataManager
-        emailList={emailList}
-        show={showEmailData}
-        onAddEmail={handleAddEmail}
-        onRemoveEmail={handleRemoveEmail}
-      />
     </div>
   );
 }

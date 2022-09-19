@@ -14,28 +14,23 @@ type Email = {
   id: string;
 };
 
-export function ServiceDataManager({
+export default function Settings() {}
+
+function ServiceDataManager({
   serviceList,
-  show,
   onAddService,
   onRemoveService,
 }: {
   serviceList: Service[];
-  show: boolean;
   onAddService: (name: string, comment: string, url: string) => void;
   onRemoveService: (serviceId: string) => void;
 }) {
   const [serviceName, setServiceName] = useState("");
   const [comments, setComments] = useState("");
   const [url, setUrl] = useState("");
-  const [showComponent, setShowComponent] = useState(show);
-
-  useEffect(() => {
-    setShowComponent(show);
-  }, [show]);
 
   return (
-    <div className={`${showComponent ? "opacity-100" : "opacity-0"}`}>
+    <div className="">
       <header>
         <h2>Service Manager</h2>
       </header>
@@ -103,9 +98,8 @@ export function ServiceDataManager({
   );
 }
 
-export function EmailDataManager({
+function EmailDataManager({
   emailList,
-  show,
   onAddEmail,
   onRemoveEmail,
 }: {
@@ -116,14 +110,9 @@ export function EmailDataManager({
 }) {
   const [email, setEmail] = useState("");
   const [comments, setComments] = useState("");
-  const [showComponent, setShowComponent] = useState(show);
-
-  useEffect(() => {
-    setShowComponent(show);
-  }, [show]);
 
   return (
-    <div className={`${showComponent ? "opacity-100" : "opacity-0"}`}>
+    <div className="">
       <header>
         <h2>E-mail Manager</h2>
       </header>
