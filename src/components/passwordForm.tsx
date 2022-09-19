@@ -1,6 +1,7 @@
 import { useState, useReducer } from "react";
 import { MdSettings, MdLock } from "react-icons/md";
 import Settings from "./Settings";
+import CheckboxInput from "./CheckboxInput";
 import {
   Email,
   EmailAction,
@@ -186,7 +187,7 @@ export default function PasswordForm({
 
         <fieldset className="border border-slate-400 p-2 rounded flex flex-col w-full">
           <legend className="font-medium">Generator Data</legend>
-          <div className="relative flex flex-col">
+          <div className="relative flex flex-col py-1">
             <label className="font-medium" htmlFor="length">
               Character Length
             </label>
@@ -210,69 +211,45 @@ export default function PasswordForm({
             </span>
           </div>
 
-          <div className="flex items-center">
-            <input
-              className="mr-2"
-              type="checkbox"
-              name="uppercase"
-              id="uppercase"
-              checked={generatorData.includeUppercase}
-              onChange={() =>
-                dispatchGeneratorData({
-                  type: "TOGGLE_UPPERCASE",
-                })
-              }
-            />
-            <label htmlFor="uppercase">Include uppercase letters</label>
-          </div>
+          <CheckboxInput
+            id="uppercase"
+            checked={generatorData.includeUppercase}
+            handleChange={() =>
+              dispatchGeneratorData({ type: "TOGGLE_UPPERCASE" })
+            }
+          >
+            Include uppercase
+          </CheckboxInput>
 
-          <div className="flex items-center">
-            <input
-              className="mr-2"
-              type="checkbox"
-              name="lowercase"
-              id="lowercase"
-              checked={generatorData.includeLowercase}
-              onChange={() =>
-                dispatchGeneratorData({
-                  type: "TOGGLE_LOWERCASE",
-                })
-              }
-            />
-            <label htmlFor="lowercase">Include lowercase letters</label>
-          </div>
+          <CheckboxInput
+            id="lowercase"
+            checked={generatorData.includeLowercase}
+            handleChange={() =>
+              dispatchGeneratorData({ type: "TOGGLE_LOWERCASE" })
+            }
+          >
+            Include lowercase
+          </CheckboxInput>
 
-          <div className="flex items-center">
-            <input
-              className="mr-2"
-              type="checkbox"
-              name="numbers"
-              id="numbers"
-              checked={generatorData.includeNumbers}
-              onChange={() =>
-                dispatchGeneratorData({
-                  type: "TOGGLE_NUMBERS",
-                })
-              }
-            />
-            <label htmlFor="numbers">Include numbers</label>
-          </div>
+          <CheckboxInput
+            id="numbers"
+            checked={generatorData.includeNumbers}
+            handleChange={() =>
+              dispatchGeneratorData({ type: "TOGGLE_NUMBERS" })
+            }
+          >
+            Include numbers
+          </CheckboxInput>
 
-          <div className="flex items-center">
-            <input
-              className="mr-2"
-              type="checkbox"
-              name="symbols"
-              id="symbols"
-              checked={generatorData.includeSymbols}
-              onChange={() =>
-                dispatchGeneratorData({
-                  type: "TOGGLE_SYMBOLS",
-                })
-              }
-            />
-            <label htmlFor="symbols">Include symbols</label>
-          </div>
+          <CheckboxInput
+            id="symbols"
+            checked={generatorData.includeSymbols}
+            handleChange={() =>
+              dispatchGeneratorData({ type: "TOGGLE_SYMBOLS" })
+            }
+          >
+            Include symbols
+          </CheckboxInput>
         </fieldset>
         <button
           className="bg-slate-800 text-white font-bold px-4 py-2 tracking-widest rounded my-4"
