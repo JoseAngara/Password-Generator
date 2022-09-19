@@ -133,6 +133,10 @@ function App() {
     };
   };
 
+  const changeEncryptationKey = (key: string) => {
+    setEncryptationKey(key);
+  };
+
   const createRegEx = (generatorData: GeneratorData) => {
     return new RegExp(
       `[${generatorData.includeLowercase ? "a-z" : ""}${
@@ -156,14 +160,16 @@ function App() {
     );
   };
   return (
-    <div>
-      <main>
+    <div className="container h-screen flex items-center justify-center relative text-slate-800">
+      <main className="w-11/12 border-slate-800 border-4 p-2  rounded">
         <PasswordForm
+          encryptationKey={encryptationKey}
           serviceList={serviceList}
           dispatchServiceList={dispatchServiceList}
           emailList={emailList}
           dispatchEmailList={dispatchEmailList}
           onSubmit={handleCreate}
+          setKey={changeEncryptationKey}
         />
         <div>
           <span>{securityCodes.password || "password"}</span>

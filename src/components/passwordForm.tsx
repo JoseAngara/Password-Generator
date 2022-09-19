@@ -1,5 +1,6 @@
 import React, { useState, useReducer, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { MdSettings } from "react-icons/md";
 import Settings from "./Settings";
 import {
   Email,
@@ -54,6 +55,8 @@ export default function PasswordForm({
   emailList,
   dispatchEmailList,
   onSubmit,
+  encryptationKey,
+  setKey,
 }: {
   serviceList: Service[];
   dispatchServiceList: (action: ServiceAction) => void;
@@ -64,6 +67,8 @@ export default function PasswordForm({
     email: string,
     generatorData: GeneratorData
   ) => void;
+  encryptationKey: string;
+  setKey: (key: string) => void;
 }) {
   const [service, setService] = useState("");
   const [email, setEmail] = useState("");
@@ -103,11 +108,27 @@ export default function PasswordForm({
   };
 
   return (
-    <div>
-      <header>
-        <h1>Password Generator</h1>
-        <button onClick={() => setShowSettings(true)}>Settings</button>
+    <div className="">
+      <header className="flex justify-between items-center text-lg">
+        <h1 className="font-bold tracking-wide uppercase">
+          Password Generator
+        </h1>
+        <span onClick={() => setShowSettings(true)}>
+          <MdSettings size={"2em"} />
+        </span>
       </header>
+      <Settings
+        encryptationKey={encryptationKey}
+        showSettings={showSettings}
+        handleShowSettings={setShowSettings}
+        setKey={setKey}
+        serviceUtilities={{
+          serviceList,
+          handleAddService,
+          handleRemoveService,
+        }}
+        emailUtilities={{ emailList, handleAddEmail, handleRemoveEmail }}
+      />
       <form
         onSubmit={(event) => {
           onSubmit(service, email, generatorData);

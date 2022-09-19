@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdClose } from "react-icons/md";
 
 type Service = {
   name: string;
@@ -14,7 +15,92 @@ type Email = {
   id: string;
 };
 
-export default function Settings() {}
+export default function Settings({
+  showSettings,
+  handleShowSettings,
+  encryptationKey,
+  setKey,
+  serviceUtilities: { serviceList, handleAddService, handleRemoveService },
+  emailUtilities: { emailList, handleAddEmail, handleRemoveEmail },
+}: {
+  showSettings: boolean;
+  handleShowSettings: (value: boolean) => void;
+  encryptationKey: string;
+  setKey: (key: string) => void;
+  serviceUtilities: {
+    serviceList: Service[];
+    handleAddService: (name: string, comment: string, url: string) => void;
+    handleRemoveService: (serviceId: string) => void;
+  };
+  emailUtilities: {
+    emailList: Email[];
+    handleAddEmail: (email: string, comment: string) => void;
+    handleRemoveEmail: (emailId: string) => void;
+  };
+}) {
+  const [showComponent, setShowComponent] = useState(showSettings);
+  const [actualKey, setActualKey] = useState(encryptationKey);
+  const [keyValue, setKeyValue] = useState("");
+
+  useEffect(() => {
+    setShowComponent(showSettings);
+  }, [showSettings]);
+
+  useEffect(() => {
+    setActualKey(encryptationKey);
+  }, [encryptationKey]);
+
+  return (
+    <div
+      className={`${
+        showComponent ? "opacity-100" : "opacity-0 pointer-events-none"
+      } absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 container h-screen bg-slate-500/50 flex justify-center items-center transition-opacity duration-200 ease-in-out`}
+    >
+      <div className="bg-white w-10/12 p-2">
+        <header>
+          <h2>Settings</h2>
+          <span onClick={() => handleShowSettings(false)}>
+            <MdClose size={"2em"} />
+          </span>
+        </header>
+        <div>
+          <p>
+            Here is your key, this key is used to generate your passwords. It is
+            genereated randomly the first time you open the app, but you can
+            change it here if you had already one.
+          </p>
+          <div>
+            <span>{encryptationKey}</span>
+          </div>
+          <form
+            onSubmit={(event) => {
+              setKey(keyValue);
+              event.preventDefault();
+            }}
+          >
+            <input
+              type="text"
+              id="setKey"
+              value={keyValue}
+              onChange={(event) => setKeyValue(event.target.value)}
+            />
+            <button type="submit">Change key</button>
+          </form>
+        </div>
+        <ServiceDataManager
+          serviceList={serviceList}
+          onAddService={handleAddService}
+          onRemoveService={handleRemoveService}
+        />
+        <EmailDataManager
+          emailList={emailList}
+          onAddEmail={handleAddEmail}
+          onRemoveEmail={handleRemoveEmail}
+        />
+      </div>
+    </div>
+  );
+}
 
 function ServiceDataManager({
   serviceList,
@@ -32,7 +118,7 @@ function ServiceDataManager({
   return (
     <div className="">
       <header>
-        <h2>Service Manager</h2>
+        <h3>Service Manager</h3>
       </header>
       <div>
         <table>
@@ -104,7 +190,6 @@ function EmailDataManager({
   onRemoveEmail,
 }: {
   emailList: Email[];
-  show: boolean;
   onAddEmail: (email: string, comment: string) => void;
   onRemoveEmail: (emailId: string) => void;
 }) {
@@ -114,7 +199,7 @@ function EmailDataManager({
   return (
     <div className="">
       <header>
-        <h2>E-mail Manager</h2>
+        <h3>E-mail Manager</h3>
       </header>
       <table>
         <tbody>
