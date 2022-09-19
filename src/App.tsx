@@ -7,7 +7,7 @@ import {
 import PasswordForm from "./components/passwordForm";
 import ShowCode from "./components/ShowCode";
 import { v4 as uuidv4 } from "uuid";
-import { getPassword, getPin } from "./utils/encrypt";
+import { getPassword, getPin } from "./utils/Encrypt";
 import {
   Email,
   EmailAction,
