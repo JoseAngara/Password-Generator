@@ -57,7 +57,7 @@ export default function Settings({
         showComponent ? "opacity-100" : "opacity-0 pointer-events-none"
       } absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 container h-screen bg-slate-500/50 flex justify-center items-center transition-opacity duration-200 ease-in-out z-10 py-4`}
     >
-      <div className="bg-white w-10/12 p-2 max-h-full overflow-auto relative">
+      <div className="bg-white w-10/12 p-2 max-h-full sm:w-[30rem] overflow-auto relative">
         <div>
           <header className="flex justify-between items-center text-lg">
             <h2 className="font-bold tracking-wide uppercase">Settings</h2>
@@ -77,21 +77,22 @@ export default function Settings({
               </span>
             </div>
             <form
-              className="flex items-center py-2"
+              className="flex items-center py-2 w-full"
               onSubmit={(event) => {
                 setKey(keyValue);
                 event.preventDefault();
               }}
             >
               <input
-                className="bg-slate-200 border px-2  appearance-none mr-2"
+                className="bg-slate-200 border px-2  appearance-none mr-2 grow"
                 type="text"
                 id="setKey"
+                autoComplete="off"
                 value={keyValue}
                 onChange={(event) => setKeyValue(event.target.value)}
               />
               <button
-                className="bg-slate-800 text-white font-bold px-2 py-1 tracking-widest rounded"
+                className="bg-slate-800 text-white font-bold px-2 py-1 tracking-widest rounded shrink-0"
                 type="submit"
               >
                 Change
@@ -128,12 +129,14 @@ function ServiceDataManager({
   const [url, setUrl] = useState("");
 
   return (
-    <div className="">
+    <div className="mb-8 mt-4">
       <header>
-        <h3 className="font-bold tracking-wide uppercase">Service Manager</h3>
+        <h3 className="font-bold tracking-wide uppercase mb-2">
+          Service Manager
+        </h3>
       </header>
       <div>
-        <ul className="w-full divide-y">
+        <ul className="w-full divide-y mb-6">
           {serviceList.map((service) => (
             <ItemInfo item={service} handleRemoveItem={onRemoveService} />
           ))}
@@ -211,11 +214,13 @@ function EmailDataManager({
   const [comments, setComments] = useState("");
 
   return (
-    <div className="">
+    <div className="mb-8 mt-4">
       <header>
-        <h3 className="font-bold tracking-wide uppercase">E-mail Manager</h3>
+        <h3 className="font-bold tracking-wide uppercase mb-2">
+          E-mail Manager
+        </h3>
       </header>
-      <ul className="w-full divide-y">
+      <ul className="w-full divide-y mb-6">
         {emailList.map((email) => (
           <ItemInfo item={email} handleRemoveItem={onRemoveEmail} />
         ))}
