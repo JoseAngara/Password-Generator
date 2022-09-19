@@ -109,7 +109,8 @@ function App() {
 
   const [encryptationKey, setEncryptationKey] = useSemiPersistentState(
     "key",
-    uuidv4()
+    uuidv4(),
+    true
   );
   const [securityCodes, setSecurityCodes] = useState({
     password: "",
