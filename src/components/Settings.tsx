@@ -141,7 +141,11 @@ function ServiceDataManager({
       <div>
         <ul className="w-full divide-y mb-6">
           {serviceList.map((service) => (
-            <ItemInfo item={service} handleRemoveItem={onRemoveService} />
+            <ItemInfo
+              key={service.id}
+              item={service}
+              handleRemoveItem={onRemoveService}
+            />
           ))}
         </ul>
         <form
@@ -225,7 +229,11 @@ function EmailDataManager({
       </header>
       <ul className="w-full divide-y mb-6">
         {emailList.map((email) => (
-          <ItemInfo item={email} handleRemoveItem={onRemoveEmail} />
+          <ItemInfo
+            key={email.id}
+            item={email}
+            handleRemoveItem={onRemoveEmail}
+          />
         ))}
       </ul>
       <form

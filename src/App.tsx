@@ -5,6 +5,7 @@ import {
   useSemiPersistentReducer,
 } from "./utils/custom-hooks";
 import PasswordForm from "./components/passwordForm";
+import ShowCode from "./components/ShowCode";
 import { v4 as uuidv4 } from "uuid";
 import { getPassword, getPin } from "./utils/encrypt";
 import {
@@ -13,7 +14,6 @@ import {
   Service,
   ServiceAction,
   GeneratorData,
-  GeneratorAction,
 } from "./utils/types";
 
 type SecurityCodes = {
@@ -171,13 +171,10 @@ function App() {
           onSubmit={handleCreate}
           setKey={changeEncryptationKey}
         />
-        <div className="flex flex-col items-center sm:justify-center border border-slate-400 p-2 rounded font-ubuntu-mono">
-          <span className="flex items-center justify-center w-full min-h-max sm:h-1/2 font-bold text-2xl py-4 text-center break-all border-b border-slate-400">
-            {securityCodes.password || "PASSWORD"}
-          </span>
-          <span className="flex items-center justify-center w-full min-h-max sm:h-1/2 font-bold text-2xl py-4 text-center break-all">
-            {securityCodes.pin || "PIN"}
-          </span>
+        <div className="flex flex-col items-center sm:justify-center border border-slate-400 p-2 rounded font-fira-mono select-none">
+          <ShowCode code={securityCodes.password}>PASSWORD</ShowCode>
+          <div className="w-full border-b border-slate-400"></div>
+          <ShowCode code={securityCodes.pin}>PIN</ShowCode>
         </div>
       </main>
     </div>
