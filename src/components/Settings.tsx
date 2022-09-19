@@ -61,7 +61,10 @@ export default function Settings({
         <div>
           <header className="flex justify-between items-center text-lg">
             <h2 className="font-bold tracking-wide uppercase">Settings</h2>
-            <span onClick={() => handleShowSettings(false)}>
+            <span
+              className="cursor-pointer"
+              onClick={() => handleShowSettings(false)}
+            >
               <MdClose size={"2em"} />
             </span>
           </header>

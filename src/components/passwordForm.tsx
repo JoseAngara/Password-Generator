@@ -1,6 +1,5 @@
-import React, { useState, useReducer, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { MdSettings } from "react-icons/md";
+import { useState, useReducer } from "react";
+import { MdSettings, MdLock } from "react-icons/md";
 import Settings from "./Settings";
 import {
   Email,
@@ -109,11 +108,12 @@ export default function PasswordForm({
 
   return (
     <div className="">
-      <header className="flex justify-between items-center text-lg">
-        <h1 className="font-bold tracking-wide uppercase">
+      <header className="flex justify-between items-center text-lg mb-4">
+        <h1 className="flex items-center font-bold tracking-wide uppercase text-2xl">
+          <MdLock size={"1.5em"} />
           Password Generator
         </h1>
-        <span onClick={() => setShowSettings(true)}>
+        <span className="cursor-pointer" onClick={() => setShowSettings(true)}>
           <MdSettings size={"2em"} />
         </span>
       </header>
@@ -133,6 +133,7 @@ export default function PasswordForm({
         className="flex flex-col items-center"
         onSubmit={(event) => {
           onSubmit(service, email, generatorData);
+          setEmail("");
           event.preventDefault();
         }}
       >
@@ -274,7 +275,7 @@ export default function PasswordForm({
           </div>
         </fieldset>
         <button
-          className="bg-slate-800 text-white font-bold px-4 py-2 tracking-widest rounded mt-4"
+          className="bg-slate-800 text-white font-bold px-4 py-2 tracking-widest rounded my-4"
           type="submit"
         >
           Generate
