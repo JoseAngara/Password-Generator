@@ -62,37 +62,8 @@ const serviceReducer = (state: Service[], action: ServiceAction) => {
   }
 };
 
-let initialServices: Service[] = [
-  {
-    name: "Facebook",
-    comment: "",
-    url: "https://www.facebook.com",
-    value: uuidv4(),
-    id: uuidv4(),
-  },
-  {
-    name: "Twitter",
-    comment: "",
-    url: "https://twitter.com/",
-    value: uuidv4(),
-    id: uuidv4(),
-  },
-  {
-    name: "League of Legends",
-    comment: "LAN server",
-    url: "https://www.leagueoflegends.com/es-mx/",
-    value: uuidv4(),
-    id: uuidv4(),
-  },
-];
-let initialEmail: Email[] = [
-  { email: "jmeh1992@gmail.com", comment: "Personal e-mail", id: uuidv4() },
-  {
-    email: "j-m-eh@hotmail.com",
-    comment: "My first hotmail mail",
-    id: uuidv4(),
-  },
-];
+let initialServices: Service[] = [];
+let initialEmail: Email[] = [];
 
 function App() {
   const [serviceList, dispatchServiceList] = useSemiPersistentReducer(
