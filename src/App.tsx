@@ -161,7 +161,7 @@ function App() {
   };
   return (
     <div className="container h-screen flex items-center justify-center relative text-slate-800">
-      <main className="w-11/12 border-slate-800 border-4 p-2  rounded">
+      <main className="w-11/12">
         <PasswordForm
           encryptationKey={encryptationKey}
           serviceList={serviceList}
@@ -171,9 +171,13 @@ function App() {
           onSubmit={handleCreate}
           setKey={changeEncryptationKey}
         />
-        <div>
-          <span>{securityCodes.password || "password"}</span>
-          <span>{securityCodes.pin || "pin"}</span>
+        <div className="flex flex-col items-center">
+          <span className="w-full min-h-20 font-bold text-2xl py-4 text-center break-all">
+            {securityCodes.password || "PASSWORD"}
+          </span>
+          <span className="w-full min-h-20 font-bold text-2xl py-4 text-center break-all">
+            {securityCodes.pin || "PIN"}
+          </span>
         </div>
       </main>
     </div>

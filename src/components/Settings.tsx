@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ItemInfo } from "./ItemInfo";
 import { MdClose } from "react-icons/md";
 
 type Service = {
@@ -54,49 +55,60 @@ export default function Settings({
     <div
       className={`${
         showComponent ? "opacity-100" : "opacity-0 pointer-events-none"
-      } absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 container h-screen bg-slate-500/50 flex justify-center items-center transition-opacity duration-200 ease-in-out`}
+      } absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 container h-screen bg-slate-500/50 flex justify-center items-center transition-opacity duration-200 ease-in-out z-10 py-4`}
     >
-      <div className="bg-white w-10/12 p-2">
-        <header>
-          <h2>Settings</h2>
-          <span onClick={() => handleShowSettings(false)}>
-            <MdClose size={"2em"} />
-          </span>
-        </header>
+      <div className="bg-white w-10/12 p-2 max-h-full overflow-auto relative">
         <div>
-          <p>
-            Here is your key, this key is used to generate your passwords. It is
-            genereated randomly the first time you open the app, but you can
-            change it here if you had already one.
-          </p>
+          <header className="flex justify-between items-center text-lg">
+            <h2 className="font-bold tracking-wide uppercase">Settings</h2>
+            <span onClick={() => handleShowSettings(false)}>
+              <MdClose size={"2em"} />
+            </span>
+          </header>
           <div>
-            <span>{encryptationKey}</span>
+            <p className="my-2 mb-4 text-slate-500">
+              Here is your key, this key is used to generate your passwords. It
+              is genereated randomly the first time you open the app, but you
+              can change it here if you had already one.
+            </p>
+            <div className="mb-4">
+              <span className=" block w-full text-center font-bold text-sm">
+                {encryptationKey}
+              </span>
+            </div>
+            <form
+              className="flex items-center py-2"
+              onSubmit={(event) => {
+                setKey(keyValue);
+                event.preventDefault();
+              }}
+            >
+              <input
+                className="bg-slate-200 border px-2  appearance-none mr-2"
+                type="text"
+                id="setKey"
+                value={keyValue}
+                onChange={(event) => setKeyValue(event.target.value)}
+              />
+              <button
+                className="bg-slate-800 text-white font-bold px-2 py-1 tracking-widest rounded"
+                type="submit"
+              >
+                Change
+              </button>
+            </form>
           </div>
-          <form
-            onSubmit={(event) => {
-              setKey(keyValue);
-              event.preventDefault();
-            }}
-          >
-            <input
-              type="text"
-              id="setKey"
-              value={keyValue}
-              onChange={(event) => setKeyValue(event.target.value)}
-            />
-            <button type="submit">Change key</button>
-          </form>
+          <ServiceDataManager
+            serviceList={serviceList}
+            onAddService={handleAddService}
+            onRemoveService={handleRemoveService}
+          />
+          <EmailDataManager
+            emailList={emailList}
+            onAddEmail={handleAddEmail}
+            onRemoveEmail={handleRemoveEmail}
+          />
         </div>
-        <ServiceDataManager
-          serviceList={serviceList}
-          onAddService={handleAddService}
-          onRemoveService={handleRemoveService}
-        />
-        <EmailDataManager
-          emailList={emailList}
-          onAddEmail={handleAddEmail}
-          onRemoveEmail={handleRemoveEmail}
-        />
       </div>
     </div>
   );
@@ -118,26 +130,14 @@ function ServiceDataManager({
   return (
     <div className="">
       <header>
-        <h3>Service Manager</h3>
+        <h3 className="font-bold tracking-wide uppercase">Service Manager</h3>
       </header>
       <div>
-        <table>
-          <tbody>
-            {serviceList.map((service) => (
-              <tr key={service.id}>
-                <th>
-                  <a href={service.url}>{service.name}</a>
-                </th>
-                <td>{service.comment || "No comment"}</td>
-                <td>
-                  <button onClick={() => onRemoveService(service.id)}>
-                    Remove
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ul className="w-full divide-y">
+          {serviceList.map((service) => (
+            <ItemInfo item={service} handleRemoveItem={onRemoveService} />
+          ))}
+        </ul>
         <form
           onSubmit={(event) => {
             onAddService(serviceName, comments, url);
@@ -147,37 +147,51 @@ function ServiceDataManager({
             event.preventDefault();
           }}
         >
-          <h3>Add Service</h3>
-          <label htmlFor="serviceName">Name</label>
-          <input
-            type="text"
-            id="serviceName"
-            autoComplete="off"
-            value={serviceName}
-            required
-            onChange={(event) => setServiceName(event.target.value)}
-          />
-
-          <label htmlFor="comments">Comments</label>
-          <input
-            type="text"
-            id="comments"
-            autoComplete="off"
-            value={comments}
-            onChange={(event) => setComments(event.target.value)}
-          />
-
-          <label htmlFor="url">URL</label>
-          <input
-            type="url"
-            name="url"
-            id="url"
-            autoComplete="off"
-            value={url}
-            required
-            onChange={(event) => setUrl(event.target.value)}
-          />
-          <button type="submit">Create service</button>
+          <fieldset className="border border-slate-400 p-2 rounded flex flex-col w-full">
+            <legend className="font-medium">Add Service</legend>
+            <label className="font-medium" htmlFor="serviceName">
+              Name
+            </label>
+            <input
+              className="bg-slate-200 border px-2  appearance-none"
+              type="text"
+              id="serviceName"
+              autoComplete="off"
+              value={serviceName}
+              required
+              onChange={(event) => setServiceName(event.target.value)}
+            />
+            <label className="font-medium" htmlFor="comments">
+              Comments
+            </label>
+            <input
+              className="bg-slate-200 border px-2  appearance-none"
+              type="text"
+              id="comments"
+              autoComplete="off"
+              value={comments}
+              onChange={(event) => setComments(event.target.value)}
+            />
+            <label className="font-medium" htmlFor="url">
+              URL
+            </label>
+            <input
+              className="bg-slate-200 border px-2  appearance-none"
+              type="url"
+              name="url"
+              id="url"
+              autoComplete="off"
+              value={url}
+              required
+              onChange={(event) => setUrl(event.target.value)}
+            />
+            <button
+              className="bg-slate-800 text-white font-bold px-4 py-2 tracking-widest rounded mt-4"
+              type="submit"
+            >
+              Create service
+            </button>
+          </fieldset>
         </form>
       </div>
     </div>
@@ -199,21 +213,13 @@ function EmailDataManager({
   return (
     <div className="">
       <header>
-        <h3>E-mail Manager</h3>
+        <h3 className="font-bold tracking-wide uppercase">E-mail Manager</h3>
       </header>
-      <table>
-        <tbody>
-          {emailList.map((email) => (
-            <tr key={email.id}>
-              <th>{email.email}</th>
-              <td>{email.comment || "No comment"}</td>
-              <td>
-                <button onClick={() => onRemoveEmail(email.id)}>Remove</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <ul className="w-full divide-y">
+        {emailList.map((email) => (
+          <ItemInfo item={email} handleRemoveItem={onRemoveEmail} />
+        ))}
+      </ul>
       <form
         onSubmit={(event) => {
           onAddEmail(email, comments);
@@ -222,25 +228,38 @@ function EmailDataManager({
           event.preventDefault();
         }}
       >
-        <label htmlFor="emailName">E-mail</label>
-        <input
-          type="email"
-          id="emailName"
-          autoComplete="off"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-        />
-
-        <label htmlFor="emailComments">Comments</label>
-        <input
-          type="text"
-          id="emailComments"
-          autoComplete="off"
-          value={comments}
-          onChange={(event) => setComments(event.target.value)}
-        />
-        <button type="submit">Create E-mail</button>
+        <fieldset className="border border-slate-400 p-2 rounded flex flex-col w-full">
+          <legend>Add E-mail</legend>
+          <label className="font-medium" htmlFor="emailName">
+            E-mail
+          </label>
+          <input
+            className="bg-slate-200 border px-2  appearance-none"
+            type="email"
+            id="emailName"
+            autoComplete="off"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+          />
+          <label className="font-medium" htmlFor="emailComments">
+            Comments
+          </label>
+          <input
+            className="bg-slate-200 border px-2  appearance-none"
+            type="text"
+            id="emailComments"
+            autoComplete="off"
+            value={comments}
+            onChange={(event) => setComments(event.target.value)}
+          />
+          <button
+            className="bg-slate-800 text-white font-bold px-4 py-2 tracking-widest rounded mt-4"
+            type="submit"
+          >
+            Create E-mail
+          </button>
+        </fieldset>
       </form>
     </div>
   );

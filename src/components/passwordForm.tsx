@@ -130,30 +130,43 @@ export default function PasswordForm({
         emailUtilities={{ emailList, handleAddEmail, handleRemoveEmail }}
       />
       <form
+        className="flex flex-col items-center"
         onSubmit={(event) => {
           onSubmit(service, email, generatorData);
           event.preventDefault();
         }}
       >
-        <fieldset>
-          <legend>Account Data</legend>
-          <label htmlFor="service">Service</label>
+        <fieldset className="border border-slate-400 p-2 rounded flex flex-col mb-2 w-full">
+          <legend className="font-medium">Account Data</legend>
+          <label className="font-medium" htmlFor="service">
+            Service
+          </label>
           <select
+            className="bg-slate-200 border px-2 appearance-none"
             name="services"
             id="service"
             value={service}
             onChange={(event) => setService(event.target.value)}
           >
-            <option value="">Without service</option>
+            <option className="" value="">
+              Without service
+            </option>
             {serviceList.map((service) => (
-              <option key={service.id} value={service.value}>
+              <option
+                className="hover:bg-slate-800 hover:text-white"
+                key={service.id}
+                value={service.value}
+              >
                 {service.name}
               </option>
             ))}
           </select>
 
-          <label htmlFor="email">E-mail</label>
+          <label className="font-medium" htmlFor="email">
+            E-mail
+          </label>
           <input
+            className="bg-slate-200 border px-2  appearance-none"
             type="email"
             id="email"
             list="emaillist"
@@ -170,78 +183,102 @@ export default function PasswordForm({
           </datalist>
         </fieldset>
 
-        <fieldset>
-          <legend>Generator Data</legend>
-          <label htmlFor="length">Character Length</label>
-          <input
-            type="range"
-            name="length"
-            id="length"
-            min={8}
-            max={60}
-            value={generatorData.length}
-            onChange={(event) =>
-              dispatchGeneratorData({
-                type: "SET_LENGTH",
-                length: Number(event.target.value),
-              })
-            }
-          />
-          <span>{generatorData.length}</span>
+        <fieldset className="border border-slate-400 p-2 rounded flex flex-col w-full">
+          <legend className="font-medium">Generator Data</legend>
+          <div className="relative flex flex-col">
+            <label className="font-medium" htmlFor="length">
+              Character Length
+            </label>
+            <input
+              className="appearance-none h-2 rounded-lg bg-slate-200"
+              type="range"
+              name="length"
+              id="length"
+              min={8}
+              max={60}
+              value={generatorData.length}
+              onChange={(event) =>
+                dispatchGeneratorData({
+                  type: "SET_LENGTH",
+                  length: Number(event.target.value),
+                })
+              }
+            />
+            <span className="font-medium absolute right-0">
+              {generatorData.length}
+            </span>
+          </div>
 
-          <input
-            type="checkbox"
-            name="uppercase"
-            id="uppercase"
-            checked={generatorData.includeUppercase}
-            onChange={() =>
-              dispatchGeneratorData({
-                type: "TOGGLE_UPPERCASE",
-              })
-            }
-          />
-          <label htmlFor="uppercase">Include uppercase letters</label>
+          <div className="flex items-center">
+            <input
+              className="mr-2"
+              type="checkbox"
+              name="uppercase"
+              id="uppercase"
+              checked={generatorData.includeUppercase}
+              onChange={() =>
+                dispatchGeneratorData({
+                  type: "TOGGLE_UPPERCASE",
+                })
+              }
+            />
+            <label htmlFor="uppercase">Include uppercase letters</label>
+          </div>
 
-          <input
-            type="checkbox"
-            name="lowercase"
-            id="lowercase"
-            checked={generatorData.includeLowercase}
-            onChange={() =>
-              dispatchGeneratorData({
-                type: "TOGGLE_LOWERCASE",
-              })
-            }
-          />
-          <label htmlFor="lowercase">Include lowercase letters</label>
+          <div className="flex items-center">
+            <input
+              className="mr-2"
+              type="checkbox"
+              name="lowercase"
+              id="lowercase"
+              checked={generatorData.includeLowercase}
+              onChange={() =>
+                dispatchGeneratorData({
+                  type: "TOGGLE_LOWERCASE",
+                })
+              }
+            />
+            <label htmlFor="lowercase">Include lowercase letters</label>
+          </div>
 
-          <input
-            type="checkbox"
-            name="numbers"
-            id="numbers"
-            checked={generatorData.includeNumbers}
-            onChange={() =>
-              dispatchGeneratorData({
-                type: "TOGGLE_NUMBERS",
-              })
-            }
-          />
-          <label htmlFor="numbers">Include numbers</label>
+          <div className="flex items-center">
+            <input
+              className="mr-2"
+              type="checkbox"
+              name="numbers"
+              id="numbers"
+              checked={generatorData.includeNumbers}
+              onChange={() =>
+                dispatchGeneratorData({
+                  type: "TOGGLE_NUMBERS",
+                })
+              }
+            />
+            <label htmlFor="numbers">Include numbers</label>
+          </div>
 
-          <input
-            type="checkbox"
-            name="symbols"
-            id="symbols"
-            checked={generatorData.includeSymbols}
-            onChange={() =>
-              dispatchGeneratorData({
-                type: "TOGGLE_SYMBOLS",
-              })
-            }
-          />
-          <label htmlFor="symbols">Include symbols</label>
+          <div className="flex items-center">
+            <input
+              className="mr-2"
+              type="checkbox"
+              name="symbols"
+              id="symbols"
+              checked={generatorData.includeSymbols}
+              onChange={() =>
+                dispatchGeneratorData({
+                  type: "TOGGLE_SYMBOLS",
+                })
+              }
+            />
+            <label htmlFor="symbols">Include symbols</label>
+          </div>
         </fieldset>
-        <button type="submit">Generate</button>
+        <button
+          className="bg-slate-800 text-white font-bold px-4 py-2 tracking-widest rounded mt-4"
+          type="submit"
+        >
+          Generate
+        </button>
       </form>
     </div>
   );
