@@ -80,14 +80,14 @@ export default function Settings({
               </span>
             </div>
             <form
-              className="flex items-center py-2 w-full"
+              className="flex flex-col items-center py-2 w-full grow-0"
               onSubmit={(event) => {
                 setKey(keyValue);
                 event.preventDefault();
               }}
             >
               <input
-                className="bg-slate-200 border px-2  appearance-none mr-2 grow"
+                className="bg-slate-200 border px-2 w-full appearance-none mb-2"
                 type="text"
                 id="setKey"
                 autoComplete="off"
